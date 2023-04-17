@@ -1,0 +1,65 @@
+{
+    "Ventricle_R": {
+        "loss_fn": "BFL", 
+        "masking": true, 
+        "weight_path": "/app/models/casust/src/weights/Ventricle_R.model.pt",
+        "th": 0.5,
+        "th_tta": 0.45,
+        "color": [181, 85, 57],
+        "label": "Ventricle Right"
+    }, 
+    "Ventricle_L": {
+        "loss_fn": "BCE", 
+        "masking": true, 
+        "weight_path": "/app/models/casust/src/weights/Ventricle_L.model.pt",
+        "th": 0.5,
+        "th_tta": 0.35,
+        "color": [152, 55, 13],
+        "label": "Ventricle Left"
+    },
+    "Atrium_R": {
+        "loss_fn": "BFL", 
+        "masking": true, 
+        "weight_path": "/app/models/casust/src/weights/Atrium_R.model.pt",
+        "th": 0.5,
+        "th_tta": 0.5,
+        "color": [210, 115, 89],
+        "label": "Atrium Right"
+    }, 
+    "Atrium_L": {
+        "loss_fn": "BCE",
+        "masking": true, 
+        "weight_path": "/app/models/casust/src/weights/Atrium_L.model.pt",
+        "th": 0.5,
+        "th_tta": 0.4,
+        "color": [203, 108, 81],
+        "label": "Atrium Left"
+    },
+    "Coronary_Atery_R": {
+        "loss_fn": "BDS/BCE", 
+        "masking": true, 
+        "weight_path": "/app/models/casust/src/weights/Coronary_Atery_R.model.pt",
+        "th": 0.25,
+        "th_tta": 0.15,
+        "color": [229, 90, 170],
+        "label": "Coronary Atery Right"
+    }, 
+    "Coronary_LAD": {
+        "loss_fn": "BDS", 
+        "masking": true, 
+        "weight_path": "/app/models/casust/src/weights/Coronary_LAD.model.pt",
+        "th": 0.5,
+        "th_tta": 0.35,
+        "color": [164, 60, 233],
+        "label": "Coronary LAD"
+    }, 
+    "Coronary_Atery_CFLX": {
+        "loss_fn": "BDS/BCE", 
+        "masking": true, 
+        "weight_path": "/app/models/casust/src/weights/Coronary_Atery_CFLX.model.pt",
+        "th": 0.5,
+        "th_tta": 0.25,
+        "color": [174, 68, 68],
+        "label": "Coronary Atery CFLX"
+    }
+}
