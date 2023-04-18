@@ -99,13 +99,15 @@ def getPatientCropContext(tio_heart, crop_dim, verbose=True):
     
     return opads
 
-def getOriginalSourcePatient(input_dir):
-    print("loading srcVol from", input_dir)
-    reader = sitk.ImageSeriesReader()
-    dicom_names = reader.GetGDCMSeriesFileNames(input_dir)
-    reader.SetFileNames(dicom_names)
-    srcVol = reader.Execute()
-
+def getOriginalSourcePatient(input_path):
+    print("loading srcVol from", input_path)
+    if os.path.isdir(input_path):
+        reader = sitk.ImageSeriesReader()
+        dicom_names = reader.GetGDCMSeriesFileNames(input_path)
+        reader.SetFileNames(dicom_names)
+        srcVol = reader.Execute()
+    else:
+        srcVol = sitk.ReadImage(input_path)
     return srcVol
 
 def exportVolumeAsNRRD(srcVol, conf3d_pad, filename, th=None):
@@ -146,7 +148,7 @@ def exportVolumeAsNRRD(srcVol, conf3d_pad, filename, th=None):
     # write file, using compression (True)
     sitk.WriteImage(itkVolRS, filename, True)
 
-def finalize(configs, input_dir, output_dir):
+def finalize(configs, input_path, output_dir):
 
     # extract rois from config keys
     rois = list(configs.keys())
@@ -164,7 +166,7 @@ def finalize(configs, input_dir, output_dir):
     loading.storeFinalResultsForEvaluation(output_dir, roi_orig_confmaps, roi_ttaug_confmaps)
 
     #
-    srcVol = getOriginalSourcePatient(input_dir)
+    srcVol = getOriginalSourcePatient(input_path)
 
     # put in patient context
     for roi in rois:

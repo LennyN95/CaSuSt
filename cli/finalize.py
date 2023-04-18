@@ -11,8 +11,11 @@ parser.add_argument('--roi', dest='rois', type=str, nargs='+',
                     default=['Ventricle_R', 'Ventricle_L', 'Atrium_R', 'Atrium_L', 'Coronary_Atery_R', 'Coronary_LAD', 'Coronary_Atery_CFLX'],
                     help='define the regions of interest')
 
-parser.add_argument('--input_dir', dest='input_dir', type=str,
-                    help='input patient dicom directory')
+group = parser.add_mutually_exclusive_group(required=True)
+group.add_argument('--input_dir', dest='input_dir', type=str,
+                    help='input patient dicom directory (ct scan)')
+group.add_argument('--input_file', dest='input_file', type=str,
+                    help='input file in nrrd or nifti format (ct scan)')
 
 parser.add_argument('--output_dir', dest='output_dir', type=str,
                     help='all outputs go here')
@@ -40,8 +43,8 @@ from ssseg import finalize
 
 # parameter
 rois = args.rois
-input_dir = args.input_dir
+input_path = args.input_dir or args.input_file
 output_dir = args.output_dir
 
 # execute
-finalize.finalize(configs, input_dir, output_dir)
+finalize.finalize(configs, input_path, output_dir)

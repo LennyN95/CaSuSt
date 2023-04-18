@@ -9,15 +9,15 @@ import torchio as tio
 # local imports
 from . import loading
 
-def getSubject(input_dir, hmask_file):
+def getSubject(input_path, hmask_file):
 
     #
-    assert os.path.isdir(input_dir), "input_dir must be a folder containing ct-scan dicom files for one patient"
+    assert os.path.exists(input_path), "input_data must be either a patients ct scan in nrrd or nifti format or a folder containing dicom files of a single patients ct scan"
     assert os.path.isfile(hmask_file), "hmask_file must be a nifti file containing the patients heart mask"
 
     # create subject
     subject = tio.Subject(
-        ct_scan =  tio.ScalarImage(input_dir),  # dicom -> TODO: or better use nifti here too? does it make any difference?
+        ct_scan =  tio.ScalarImage(input_path), # dicom / nifti / nrrd
         Heart = tio.LabelMap(hmask_file)        # nifti
     )
 
@@ -134,7 +134,7 @@ def addTTAug(data, t2subject, num_random_ttaugvs):
         # get inverse transformation
         invaug_xfm = at2subject.get_inverse_transform(ignore_intensity=True)[0]
         assert isinstance(invaug_xfm, tio.transforms.augmentation.spatial.random_affine.Affine), \
-            f"probaply not the inverse affine we're looking for: {type(inverse_affine)}"
+            f"probaply not the inverse affine we're looking for: {type(invaug_xfm)}"
         ttaugs_inv.append(invaug_xfm)
         
         # extract 2d slices
@@ -165,10 +165,10 @@ def addTTAug(data, t2subject, num_random_ttaugvs):
     return ttaugs_inv
 
 
-def prepare(input_dir, hmask_file, output_dir, num_random_ttaugvs=20):
+def prepare(input_path, hmask_file, output_dir, num_random_ttaugvs=20):
 
     # sunject
-    subject = getSubject(input_dir, hmask_file)
+    subject = getSubject(input_path, hmask_file)
 
     # preprocessing
     t1subject, t2subject = preprocessSubject(subject)
