@@ -5,11 +5,14 @@ import sys
 # arguments
 parser = argparse.ArgumentParser(description='Process some integers.')
 
-parser.add_argument('--input_dir', dest='input_dir', type=str,
-                    help='input patient dicom directory')
+group = parser.add_mutually_exclusive_group(required=True)
+group.add_argument('--input_dir', dest='input_dir', type=str,
+                    help='input patient dicom directory (ct scan)')
+group.add_argument('--input_file', dest='input_file', type=str,
+                    help='input file in nrrd or nifti format (ct scan)')
 
 parser.add_argument('--hmask', dest='hmask_file', type=str,
-                    help='nifti file of th eheart mask')
+                    help='nifti file of the heart mask')
 
 parser.add_argument('--output_dir', dest='output_dir', type=str,
                     help='all outputs go here')
@@ -31,11 +34,11 @@ print("> added sys.path:    ", parentdir)
 from ssseg import prepare, loading
 
 # parameter
-input_dir = args.input_dir
+input_path = args.input_dir or args.input_file
 hmask_file = args.hmask_file
 output_dir = args.output_dir
 num_random_ttaugvs = args.num_random_ttaugvs
 
 # execute
 loading.createDirectories(output_dir)
-prepare.prepare(input_dir, hmask_file, output_dir, num_random_ttaugvs)
+prepare.prepare(input_path, hmask_file, output_dir, num_random_ttaugvs)
